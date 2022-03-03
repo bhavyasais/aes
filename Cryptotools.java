@@ -1,16 +1,5 @@
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
 import java.security.MessageDigest;
-//import java.util.concurrent.TimeUnit;
-import java.security.PrivateKey;
-import java.security.PublicKey;
 import javax.crypto.KeyGenerator; // For Key Generaion
 import javax.crypto.SecretKey;
 
@@ -31,14 +20,15 @@ public class Cryptotools {
     // ########## CBC MODE 128 bit key ##############
 
     // Create object of AesEncryptionDecryptionCBC class
-	Aes aes = new Aes();
+    Aes aes = new Aes();
     // #### SMALL FILE - 1KB ####
     // Encrypt
     long cbcEncryptStart = System.nanoTime();
     aes.encrypt(
       new File("smallFile_1KB.txt"),
       new File("SmallFileEncrypted.txt"),
-      key,"AES/CBC/PKCS5Padding"
+      key,
+      "AES/CBC/PKCS5Padding"
     );
     long cbcEncryptEnd = System.nanoTime();
     System.out.println(
@@ -51,7 +41,8 @@ public class Cryptotools {
     aes.decrypt(
       new File("SmallFileEncrypted.txt"),
       new File("SmallFileDecrypted.txt"),
-      key,"AES/CBC/PKCS5Padding"
+      key,
+      "AES/CBC/PKCS5Padding"
     );
     long cbcDecryptEnd = System.nanoTime();
     System.out.println(
@@ -65,7 +56,8 @@ public class Cryptotools {
     aes.encrypt(
       new File("largeFile_1MB.txt"),
       new File("LargeFileEncrypted.txt"),
-      key,"AES/CBC/PKCS5Padding"
+      key,
+      "AES/CBC/PKCS5Padding"
     );
     cbcEncryptEnd = System.nanoTime();
     System.out.println(
@@ -78,7 +70,8 @@ public class Cryptotools {
     aes.decrypt(
       new File("LargeFileEncrypted.txt"),
       new File("LargeFileDecrypted.txt"),
-      key,"AES/CBC/PKCS5Padding"
+      key,
+      "AES/CBC/PKCS5Padding"
     );
     cbcDecryptEnd = System.nanoTime();
     System.out.println(
@@ -94,7 +87,8 @@ public class Cryptotools {
     aes.encrypt(
       new File("smallFile_1KB.txt"),
       new File("SmallFileEncryptedCTR.txt"),
-      key,"AES/CTR/NoPadding"
+      key,
+      "AES/CTR/NoPadding"
     );
     long ctrEncryptEnd = System.nanoTime();
     System.out.println(
@@ -107,7 +101,8 @@ public class Cryptotools {
     aes.decrypt(
       new File("SmallFileEncryptedCTR.txt"),
       new File("SmallFileDecryptedCTR.txt"),
-      key,"AES/CTR/NoPadding"
+      key,
+      "AES/CTR/NoPadding"
     );
     long ctrDecryptEnd = System.nanoTime();
     System.out.println(
@@ -122,7 +117,8 @@ public class Cryptotools {
     aes.encrypt(
       new File("largeFile_1MB.txt"),
       new File("LargeFileEncryptedCTR.txt"),
-      key,"AES/CTR/NoPadding"
+      key,
+      "AES/CTR/NoPadding"
     );
     ctrEncryptEnd = System.nanoTime();
     System.out.println(
@@ -135,7 +131,8 @@ public class Cryptotools {
     aes.decrypt(
       new File("LargeFileEncryptedCTR.txt"),
       new File("LargeFileDecryptedCTR.txt"),
-      key,"AES/CTR/NoPadding"
+      key,
+      "AES/CTR/NoPadding"
     );
     ctrDecryptEnd = System.nanoTime();
     System.out.println(
@@ -151,7 +148,7 @@ public class Cryptotools {
     keyStart = System.nanoTime();
     KeyGenerator kgen1 = KeyGenerator.getInstance("AES");
     kgen1.init(256);
-    SecretKey key1 = kgen1.generateKey();
+    SecretKey key256 = kgen1.generateKey();
     keyEnd = System.nanoTime();
     System.out.println(
       "Time it take to generate a new key(256 bit)" + (keyEnd - keyStart)
@@ -162,7 +159,8 @@ public class Cryptotools {
     aes.encrypt(
       new File("smallFile_1KB.txt"),
       new File("SmallFileEncryptedCTR256.txt"),
-      key1,"AES/CTR/NoPadding"
+      key256,
+      "AES/CTR/NoPadding"
     );
     ctrEncryptEnd = System.nanoTime();
     System.out.println(
@@ -175,7 +173,8 @@ public class Cryptotools {
     aes.decrypt(
       new File("SmallFileEncryptedCTR256.txt"),
       new File("SmallFileDecryptedCTR256.txt"),
-      key1,"AES/CTR/NoPadding"
+      key256,
+      "AES/CTR/NoPadding"
     );
     ctrDecryptEnd = System.nanoTime();
     System.out.println(
@@ -189,7 +188,8 @@ public class Cryptotools {
     aes.encrypt(
       new File("largeFile_1MB.txt"),
       new File("LargeFileEncryptedCTR256.txt"),
-      key1,"AES/CTR/NoPadding"
+      key256,
+      "AES/CTR/NoPadding"
     );
     ctrEncryptEnd = System.nanoTime();
     System.out.println(
@@ -202,7 +202,8 @@ public class Cryptotools {
     aes.decrypt(
       new File("LargeFileEncryptedCTR256.txt"),
       new File("LargeFileDecryptedCTR256.txt"),
-      key1,"AES/CTR/NoPadding"
+      key256,
+      "AES/CTR/NoPadding"
     );
     ctrDecryptEnd = System.nanoTime();
     System.out.println(
@@ -219,7 +220,7 @@ public class Cryptotools {
     // byte[] dataBytes = Files.readAllBytes(Paths.get("smallFile_1KB.txt"));
     // long rsaEncryptStart = System.nanoTime();
     // // encrypter2.encrypt(new File("smallFile_1KB.txt"), new
-    // // File("SmallFileEncryptedCTR256.txt"), key1);
+    // // File("SmallFileEncryptedCTR256.txt"), key256);
     // byte[] encBytes = rsa.encrypt(dataBytes, publicKey);
     // try (FileOutputStream fos = new FileOutputStream("smallFileRSA.txt")) {
     // 	fos.write(encBytes);
@@ -228,65 +229,84 @@ public class Cryptotools {
     // long rsaEncryptEnd = System.nanoTime();
     // System.out.println(
     // 		"Total time to encrypt small file using RSA key" + (rsaEncryptEnd - rsaEncryptStart));
+
     // ####### HASH VALUE CALCULATION ############
 
-    //SMALL FILE
-    String[] HashArray = { "SHA-256", "SHA-512", "SHA3-256" };
-    int m;
-    for (m = 0; m < 3; m++) {
-      MessageDigest md = MessageDigest.getInstance(HashArray[m]);
+    ShaHash sha = new ShaHash();
 
-      long hashStart = System.nanoTime();
+    //Hasing using SHA-256
+    long hashStart = System.nanoTime();
+    sha.hashing(
+      "SHA-256",
+      MessageDigest.getInstance("SHA-256"),
+      new File("smallFile_1KB.txt")
+    );
+    long hashEnd = System.nanoTime();
+    System.out.println(
+      "SHA-256 - Hashing time in nanoseconds- LARGE FILE" +
+      (hashEnd - hashStart)
+    );
+    hashStart = System.nanoTime();
+    sha.hashing(
+      "SHA-256",
+      MessageDigest.getInstance("SHA-256"),
+      new File("largeFile_1MB.txt")
+    );
+    hashEnd = System.nanoTime();
 
-      FileInputStream fis = new FileInputStream("smallFile_1KB.txt");
-      byte[] dataBytes = new byte[1024];
+    System.out.println(
+      "SHA-256 - Hashing time in nanoseconds- LARGE FILE" +
+      (hashEnd - hashStart)
+    );
 
-      int nread = 0;
-      while ((nread = fis.read(dataBytes)) != -1) {
-        md.update(dataBytes, 0, nread);
-      }
-      fis.close();
+    //Hasing using SHA-512
+    hashStart = System.nanoTime();
+    sha.hashing(
+      "SHA-512",
+      MessageDigest.getInstance("SHA-512"),
+      new File("smallFile_1KB.txt")
+    );
+    hashEnd = System.nanoTime();
+    System.out.println(
+      "SHA-512 - Hashing time in nanoseconds- LARGE FILE" +
+      (hashEnd - hashStart)
+    );
+    hashStart = System.nanoTime();
+    sha.hashing(
+      "SHA-512",
+      MessageDigest.getInstance("SHA-512"),
+      new File("largeFile_1MB.txt")
+    );
+    hashEnd = System.nanoTime();
 
-      byte[] mdbytes = md.digest();
+    System.out.println(
+      "SHA-512 - Hashing time in nanoseconds- LARGE FILE" +
+      (hashEnd - hashStart)
+    );
 
-      long hashEnd = System.nanoTime();
+    //Hasing using SHA3-256
+    hashStart = System.nanoTime();
+    sha.hashing(
+      "SHA-512",
+      MessageDigest.getInstance("SHA3-256"),
+      new File("smallFile_1KB.txt")
+    );
+    hashEnd = System.nanoTime();
+    System.out.println(
+      "SHA3-256 - Hashing time in nanoseconds- LARGE FILE" +
+      (hashEnd - hashStart)
+    );
+    hashStart = System.nanoTime();
+    sha.hashing(
+      "SHA3-256",
+      MessageDigest.getInstance("SHA3-256"),
+      new File("largeFile_1MB.txt")
+    );
+    hashEnd = System.nanoTime();
 
-      StringBuffer sb = new StringBuffer();
-      for (int i = 0; i < mdbytes.length; i++) {
-        sb.append(
-          Integer.toString((mdbytes[i] & 0xff) + 0x100, 16).substring(1)
-        );
-      }
-
-      long hashTime = (hashEnd - hashStart);
-      System.out.println(
-        HashArray[m] + "- Hashing time in nanoseconds - SMALL FILE " + hashTime
-      );
-
-      // LARGE FILE
-      MessageDigest md2 = MessageDigest.getInstance(HashArray[m]);
-      hashStart = System.nanoTime();
-      FileInputStream fis1 = new FileInputStream("largeFile_1MB.txt");
-      dataBytes = new byte[1024];
-      nread = 0;
-      while ((nread = fis1.read(dataBytes)) != -1) {
-        md2.update(dataBytes, 0, nread);
-      }
-      fis1.close();
-
-      byte[] mdbytes1 = md2.digest();
-
-      hashEnd = System.nanoTime();
-      StringBuffer sb1 = new StringBuffer();
-      for (int i = 0; i < mdbytes1.length; i++) {
-        sb1.append(
-          Integer.toString((mdbytes1[i] & 0xff) + 0x100, 16).substring(1)
-        );
-      }
-      hashTime = (hashEnd - hashStart);
-      System.out.println(
-        HashArray[m] + "- Hashing time in nanoseconds- LARGE FILE" + hashTime
-      );
-    }
+    System.out.println(
+      "SHA3-256 - Hashing time in nanoseconds- LARGE FILE" +
+      (hashEnd - hashStart)
+    );
   }
 }
