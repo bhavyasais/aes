@@ -6,8 +6,6 @@ import javax.crypto.SecretKey;
 public class Cryptotools {
 
   public static void main(String[] args) throws Exception {
-    // 128-bit AES key generation
-
     long keyStart = System.nanoTime();
     KeyGenerator kgen = KeyGenerator.getInstance("AES");
     kgen.init(128);
@@ -19,7 +17,6 @@ public class Cryptotools {
 
     // ########## CBC MODE 128 bit key ##############
 
-    // Create object of AesEncryptionDecryptionCBC class
     Aes aes = new Aes();
     // #### SMALL FILE - 1KB ####
     // Encrypt
@@ -61,7 +58,7 @@ public class Cryptotools {
     );
     cbcEncryptEnd = System.nanoTime();
     System.out.println(
-      "Total time to decrypt large file in CBC mode" +
+      "Total time to encrypt large file in CBC mode" +
       (cbcDecryptEnd - cbcDecryptStart)
     );
 
@@ -136,7 +133,7 @@ public class Cryptotools {
     );
     ctrDecryptEnd = System.nanoTime();
     System.out.println(
-      "Total time to decrypt small file in CTR mode" +
+      "Total time to decrypt large file in CTR mode" +
       (ctrDecryptEnd - ctrDecryptStart)
     );
 
@@ -223,18 +220,20 @@ public class Cryptotools {
     // // File("SmallFileEncryptedCTR256.txt"), key256);
     // byte[] encBytes = rsa.encrypt(dataBytes, publicKey);
     // try (FileOutputStream fos = new FileOutputStream("smallFileRSA.txt")) {
-    // 	fos.write(encBytes);
-    // 	//fos.close(); There is no more need for this line since you had created the instance of "fos" inside the try. And this will automatically close the OutputStream
-    //  }
+    // fos.write(encBytes);
+    // //fos.close(); There is no more need for this line since you had created the
+    // instance of "fos" inside the try. And this will automatically close the
+    // OutputStream
+    // }
     // long rsaEncryptEnd = System.nanoTime();
     // System.out.println(
-    // 		"Total time to encrypt small file using RSA key" + (rsaEncryptEnd - rsaEncryptStart));
+    // "Total time to encrypt small file using RSA key" + (rsaEncryptEnd -
+    // rsaEncryptStart));
 
-    // ####### HASH VALUE CALCULATION ############
-
+    // Calculating Hash of Files
     ShaHash sha = new ShaHash();
 
-    //Hasing using SHA-256
+    // Hasing using SHA-256
     long hashStart = System.nanoTime();
     sha.hashing(
       "SHA-256",
@@ -259,7 +258,7 @@ public class Cryptotools {
       (hashEnd - hashStart)
     );
 
-    //Hasing using SHA-512
+    // Hasing using SHA-512
     hashStart = System.nanoTime();
     sha.hashing(
       "SHA-512",
@@ -284,7 +283,7 @@ public class Cryptotools {
       (hashEnd - hashStart)
     );
 
-    //Hasing using SHA3-256
+    // Hasing using SHA3-256
     hashStart = System.nanoTime();
     sha.hashing(
       "SHA-512",
