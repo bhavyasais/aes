@@ -37,42 +37,42 @@ public class Aes {
   };
   AlgorithmParameterSpec paramSpec = new IvParameterSpec(iv);
 
-  public void encrypt(File in, File out, SecretKey key, String instance)
+  public void encrypt(File input, File output, SecretKey key, String instance)
     throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IOException {
     Cipher ecipher = Cipher.getInstance(instance);
     ecipher.init(Cipher.ENCRYPT_MODE, key, paramSpec);
-    InputStream input = new FileInputStream(in);
-    OutputStream output = new FileOutputStream(out);
-    output = new CipherOutputStream(output, ecipher);
+    InputStream inputStream = new FileInputStream(input);
+    OutputStream outputStream = new FileOutputStream(output);
+    outputStream = new CipherOutputStream(outputStream, ecipher);
 
     // Reference :
     // https://docs.oracle.com/javase/7/docs/technotes/guides/security/crypto/CryptoSpec.html#CipherOutput
     byte[] buffer = new byte[12];
-    int i = input.read(buffer);
+    int i = inputStream.read(buffer);
     while (i != -1) {
-      output.write(buffer, 0, i);
-      i = input.read(buffer);
+      outputStream.write(buffer, 0, i);
+      i = inputStream.read(buffer);
     }
-    output.close();
-    input.close();
+    outputStream.close();
+    inputStream.close();
   }
 
-  public void decrypt(File in, File out, SecretKey key, String instance) throws NoSuchAlgorithmException,
+  public void decrypt(File input, File output, SecretKey key, String instance) throws NoSuchAlgorithmException,
 			NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IOException {
 		Cipher dcipher = Cipher.getInstance(instance);
 		dcipher.init(Cipher.DECRYPT_MODE, key, paramSpec);
-		InputStream input = new FileInputStream(in);
-		OutputStream output = new FileOutputStream(out);
-		input = new CipherInputStream(input, dcipher);
+		InputStream inputStream = new FileInputStream(input);
+		OutputStream outputStream = new FileOutputStream(output);
+		inputStream = new CipherInputStream(inputStream, dcipher);
 		// Reference :
 		// https://docs.oracle.com/javase/8/docs/technotes/guides/security/crypto/CryptoSpec.html#CipherInput
 		byte[] buffer = new byte[12];
-		int i = input.read(buffer);
+		int i = inputStream.read(buffer);
 		while (i != -1) {
-			output.write(buffer, 0, i);
-			i = input.read(buffer);
+			outputStream.write(buffer, 0, i);
+			i = inputStream.read(buffer);
 		}
-		output.close();
-		input.close();
+		outputStream.close();
+		inputStream.close();
 	}
 }
