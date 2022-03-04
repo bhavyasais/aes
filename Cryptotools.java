@@ -17,15 +17,12 @@ import javax.crypto.SecretKey;
 
 
 public class Cryptotools {
-    private static boolean fileEquals(Path firstFile, Path secondFile) {
-        try {
+    // Reference : https://docs.oracle.com/javase/7/docs/api/java/nio/file/Files.html#readAllBytes(java.nio.file.Path)
+    private static boolean fileEquals(Path firstFile, Path secondFile) throws IOException {
+        
             byte[] first = Files.readAllBytes(firstFile);
-            byte[] second = Files.readAllBytes(secondFile);
-            return Arrays.equals(first, second);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return false;
+            byte[] second = Files.readAllBytes(secondFile);        
+        return Arrays.equals(first, second);
     }
 
     public static void main(String[] args) throws Exception {
@@ -52,7 +49,7 @@ public class Cryptotools {
 
         aes.encrypt(
                 oneKbFile,
-                new File("encrypt.txt"),
+                new File("encrypt"),
                 key,
                 "AES/CBC/PKCS5Padding"
         );
@@ -71,8 +68,8 @@ public class Cryptotools {
         // Decrypt
         long cbcDecryptStart = System.nanoTime();
         aes.decrypt(
-                new File("encrypt.txt"),
-                new File("decrypt.txt"),
+                new File("encrypt"),
+                new File("decrypt"),
                 key,
                 "AES/CBC/PKCS5Padding"
         );
@@ -87,15 +84,15 @@ public class Cryptotools {
                         ((int) (oneKbFile.length() * Math.pow(10, 9))) /
                                 (cbcDecryptEnd - cbcDecryptStart)
         );
-        if (fileEquals(oneKbFile.toPath(), new File("decrypt.txt").toPath()))
+        if (fileEquals(oneKbFile.toPath(), new File("decrypt").toPath()))
             System.out.println("The computed ciphertexts decrypt to the original data (1 Kb File) using CBC mode \n");
 
-        // #### LARGE FILE - 1MB ###
+        // LARGE FILE - 10MB
         // Encrypt
         cbcEncryptStart = System.nanoTime();
         aes.encrypt(
                 tenMbFile,
-                new File("encrypt.txt"),
+                new File("encrypt"),
                 key,
                 "AES/CBC/PKCS5Padding"
         );
@@ -114,8 +111,8 @@ public class Cryptotools {
         // Decrypt
         cbcDecryptStart = System.nanoTime();
         aes.decrypt(
-                new File("encrypt.txt"),
-                new File("decrypt.txt"),
+                new File("encrypt"),
+                new File("decrypt"),
                 key,
                 "AES/CBC/PKCS5Padding"
         );
@@ -130,16 +127,15 @@ public class Cryptotools {
                                 (cbcDecryptEnd - cbcDecryptStart)
         );
 
-        if (fileEquals(tenMbFile.toPath(), new File("decrypt.txt").toPath()))
+        if (fileEquals(tenMbFile.toPath(), new File("decrypt").toPath()))
             System.out.println("The computed ciphertexts decrypt to the original data (10 Mb File) using CBC mode \n");
-        // ########## CTR MODE 128 bit Key ###############
 
-        // ### SMALL FILE - 1KB ###
+        // SMALL FILE - 1KB
         // Encrypt
         long ctrEncryptStart = System.nanoTime();
         aes.encrypt(
                 oneKbFile,
-                new File("encrypt.txt"),
+                new File("encrypt"),
                 key,
                 "AES/CTR/NoPadding"
         );
@@ -159,8 +155,8 @@ public class Cryptotools {
         // Decrypt
         long ctrDecryptStart = System.nanoTime();
         aes.decrypt(
-                new File("encrypt.txt"),
-                new File("decrypt.txt"),
+                new File("encrypt"),
+                new File("decrypt"),
                 key,
                 "AES/CTR/NoPadding"
         );
@@ -174,15 +170,15 @@ public class Cryptotools {
                         ((int) (oneKbFile.length() * Math.pow(10, 9))) /
                                 (ctrDecryptEnd - ctrDecryptStart)
         );
-        if (fileEquals(oneKbFile.toPath(), new File("decrypt.txt").toPath()))
+        if (fileEquals(oneKbFile.toPath(), new File("decrypt").toPath()))
             System.out.println("The computed ciphertexts decrypt to the original data (1 Kb File) using CTR mode \n");
-        // ### LARGE FILE - 10MB ###
+        // LARGE FILE - 10MB
 
         // Encrypt
         ctrEncryptStart = System.nanoTime();
         aes.encrypt(
                 tenMbFile,
-                new File("encrypt.txt"),
+                new File("encrypt"),
                 key,
                 "AES/CTR/NoPadding"
         );
@@ -201,8 +197,8 @@ public class Cryptotools {
         // Decrypt
         ctrDecryptStart = System.nanoTime();
         aes.decrypt(
-                new File("encrypt.txt"),
-                new File("decrypt.txt"),
+                new File("encrypt"),
+                new File("decrypt"),
                 key,
                 "AES/CTR/NoPadding"
         );
@@ -216,7 +212,7 @@ public class Cryptotools {
                         ((int) (tenMbFile.length() * Math.pow(10, 9))) /
                                 (ctrDecryptEnd - ctrDecryptStart)
         );
-        if (fileEquals(tenMbFile.toPath(), new File("decrypt.txt").toPath()))
+        if (fileEquals(tenMbFile.toPath(), new File("decrypt").toPath()))
             System.out.println("The computed ciphertexts decrypt to the original data (10 Mb File) using CTR mode \n");
         // CTR MODE
 
@@ -237,7 +233,7 @@ public class Cryptotools {
         ctrEncryptStart = System.nanoTime();
         aes.encrypt(
                 oneKbFile,
-                new File("encrypt.txt"),
+                new File("encrypt"),
                 key256,
                 "AES/CTR/NoPadding"
         );
@@ -256,8 +252,8 @@ public class Cryptotools {
         // Decrypt
         ctrDecryptStart = System.nanoTime();
         aes.decrypt(
-                new File("encrypt.txt"),
-                new File("decrypt.txt"),
+                new File("encrypt"),
+                new File("decrypt"),
                 key256,
                 "AES/CTR/NoPadding"
         );
@@ -272,14 +268,14 @@ public class Cryptotools {
                                 (ctrDecryptEnd - ctrDecryptStart)
         );
 
-        if (fileEquals(oneKbFile.toPath(), new File("decrypt.txt").toPath()))
+        if (fileEquals(oneKbFile.toPath(), new File("decrypt").toPath()))
             System.out.println("The computed ciphertexts decrypt to the original data (1 Kb File) in CTR mode using 256 bit key \n");
         // Large File 10MB
         // Encrypt
         ctrEncryptStart = System.nanoTime();
         aes.encrypt(
                 tenMbFile,
-                new File("encrypt.txt"),
+                new File("encrypt"),
                 key256,
                 "AES/CTR/NoPadding"
         );
@@ -297,8 +293,8 @@ public class Cryptotools {
         // Decrypt
         ctrDecryptStart = System.nanoTime();
         aes.decrypt(
-                new File("encrypt.txt"),
-                new File("decrypt.txt"),
+                new File("encrypt"),
+                new File("decrypt"),
                 key256,
                 "AES/CTR/NoPadding"
         );
@@ -313,7 +309,7 @@ public class Cryptotools {
                                 (ctrDecryptEnd - ctrDecryptStart)
         );
 
-        if (fileEquals(tenMbFile.toPath(), new File("decrypt.txt").toPath()))
+        if (fileEquals(tenMbFile.toPath(), new File("decrypt").toPath()))
             System.out.println("The computed ciphertexts decrypt to the original data (10 Mb File) in CTR mode using 256 bit key \n");
 
         KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
@@ -322,9 +318,8 @@ public class Cryptotools {
         PrivateKey privateKey = pair.getPrivate();
         PublicKey publicKey = pair.getPublic();
         Rsa rsa = new Rsa();
-        // byte[] dataBytes = Files.readAllBytes(Paths.get("smallFile_1KB.txt"));
         long rsaEncryptStart = System.nanoTime();
-        rsa.encrypt(oneKbFile, new File("encrypt.txt"), publicKey);
+        rsa.encrypt(oneKbFile, new File("encrypt"), publicKey);
         long rsaEncryptEnd = System.nanoTime();
         System.out.println(
                 "Total time to encrypt small file using RSA key " +
@@ -338,7 +333,7 @@ public class Cryptotools {
         );
 
         rsaEncryptStart = System.nanoTime();
-        rsa.encrypt(tenMbFile, new File("encrypt.txt"), publicKey);
+        rsa.encrypt(tenMbFile, new File("encrypt"), publicKey);
         rsaEncryptEnd = System.nanoTime();
         System.out.println(
                 "Total time to encrypt large file using RSA key " +
@@ -445,7 +440,7 @@ public class Cryptotools {
                         "\n"
         );
 
-        Files.deleteIfExists(Paths.get("encrypt.txt"));
-        Files.deleteIfExists(Paths.get("decrypt.txt"));
+        Files.deleteIfExists(Paths.get("encrypt"));
+        Files.deleteIfExists(Paths.get("decrypt"));
     }
 }
